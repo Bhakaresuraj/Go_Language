@@ -1,8 +1,8 @@
 package main
 import (
     "fmt"
-    "github.com/Go_language/devops-healthcheck/checker"
-    "github.com/Go_language/devops-healthcheck/modules"
+    "github.com/Bhakaresuraj/Go_language/devops-healthcheck/checker"
+    "github.com/Bhakaresuraj/Go_language/devops-healthcheck/modules"
 )
 
 

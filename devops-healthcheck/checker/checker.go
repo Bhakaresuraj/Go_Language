@@ -3,7 +3,7 @@ import (
 
   "fmt"
   "github.com/fatih/color"
-  "github.com/Go_language/devops-healthcheck/models"
+  "github.com/Bhakaresuraj/Go_language/devops-healthcheck/models"
 )
 
 func PrintStatus(s models.Service){
