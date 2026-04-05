@@ -1,4 +1,4 @@
-func package checker
+package checker
 import (
 
   "fmt"
@@ -25,5 +25,6 @@ func PrintStatus(s models.Service){
 func Hello(name string) string {
     // Return a greeting that embeds the name in a message.
     message := fmt.Sprintf("Hi, %v. Welcome!", name)
-    return color.Pink(message)  
+    color.Red(message)  
+    return message
 }

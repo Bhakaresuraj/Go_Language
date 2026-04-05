@@ -1,4 +1,4 @@
-package service
+package models
 
 type Service struct{
     Name string
@@ -9,7 +9,7 @@ type Service struct{
 
 func NewService(name string ,port int) Service{
     isHealthy := ValidatePort(port)
-    service :=Service{Name:name, Port:port,Healthhy:isHealthy}
+    service :=Service{Name:name, Port:port,Healthy:isHealthy}
     return service
 } 
 
