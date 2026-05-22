@@ -24,7 +24,7 @@ func (s Service)CheckHealth()(bool,int){
 	//implement the logic to check the health of the service
 	resp,err:=http.Get(s.URL)
 	if err != nil{
-		return false,resp.StatusCode
+		return false,0
 	}
 	defer resp.Body.Close()
 	// s.Healthy = resp.StatusCode == 200
