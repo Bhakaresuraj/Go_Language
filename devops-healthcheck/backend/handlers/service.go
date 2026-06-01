@@ -1,18 +1,21 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Bhakaresuraj/Go_language/devops-healthcheck/database"
-	"github.com/Bhakaresuraj/Go_language/devops-healthcheck/model"
-	"github.com/rs/cors"
 	"io"
-	"log"
 	"net/http"
 	"time"
+
+	"github.com/Bhakaresuraj/Go_language/devops-healthcheck/database"
+	"github.com/Bhakaresuraj/Go_language/devops-healthcheck/model"
 )
-var db *database.Store
-func AddService(w http.ResponseWriter, r *http.Request) {
+type ServiceHandler struct {
+	DB *database.Store
+}
+
+
+func (h *ServiceHandler) AddService(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -34,7 +37,7 @@ func AddService(w http.ResponseWriter, r *http.Request) {
 	responseTime := time.Since(avg_time)
 	service.Response_time = responseTime.Milliseconds()
 	service.Checked_at = time.Now()
-	err = db.Save(service)
+	err = h.DB.Save(service)
 	if err != nil {
 		http.Error(w, "Error Saving Service ", http.StatusInternalServerError)
 		return
@@ -42,7 +45,7 @@ func AddService(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(service)
 }
 
-func UpdateService(w http.ResponseWriter, r *http.Request) {
+func (h *ServiceHandler) UpdateService(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		http.Error(w, "Method Not Allowed", http.StatusInternalServerError)
 		return
@@ -59,7 +62,7 @@ func UpdateService(w http.ResponseWriter, r *http.Request) {
 	responseTime := time.Since(avg_time)
 	service.Checked_at = time.Now()
 	service.Response_time = responseTime.Milliseconds()
-	err = db.UpdateService(service)
+	err = h.DB.UpdateService(service)
 	if err != nil {
 		http.Error(w, "Error Updating Services : ", http.StatusInternalServerError)
 		return
@@ -67,7 +70,7 @@ func UpdateService(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(service)
 }
 
-func RunAll(w http.ResponseWriter, r *http.Request) {
+func (h *ServiceHandler) RunAll(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusInternalServerError)
@@ -84,7 +87,7 @@ func RunAll(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error while Unmarshalling body", http.StatusInternalServerError)
 		return
 	}
-	services, err := db.GetAllServices(service.UserID)
+	services, err := h.DB.GetAllServices(service.UserID)
 	if err != nil {
 		http.Error(w, "Error while fetching for update :", http.StatusInternalServerError)
 		return
@@ -96,13 +99,13 @@ func RunAll(w http.ResponseWriter, r *http.Request) {
 		responseTime := time.Since(avg_time)
 		ser.Checked_at = time.Now()
 		ser.Response_time = responseTime.Milliseconds()
-		err = db.UpdateServiceStatus(ser)
+		err = h.DB.UpdateServiceStatus(ser)
 		if err != nil {
 			fmt.Println("Update Error :", err)
 			continue
 		}
 	}
-	services, err = db.GetAllServices(service.UserID)
+	services, err = h.DB.GetAllServices(service.UserID)
 	if err != nil {
 		http.Error(w, "Error Geting Services : ", http.StatusInternalServerError)
 		return
@@ -110,7 +113,7 @@ func RunAll(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(services)
 }
 
-func DeleteHandler(w http.ResponseWriter, r *http.Request) {
+func (h *ServiceHandler) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
 		http.Error(w, "Method Not Allowed !", http.StatusMethodNotAllowed)
 		return
@@ -125,42 +128,11 @@ func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error in Unmarshalling Body ", http.StatusInternalServerError)
 
 	}
-	err = db.DeleteService(service.ID)
+	err = h.DB.DeleteService(service.ID)
 
 	if err != nil {
 		http.Error(w, "Service not deleted ", http.StatusInternalServerError)
 		return
 	}
 	fmt.Fprintln(w, "Successfully deleted Service")
-}
-
-func main() {
-	fmt.Println("Server is Running on Port :8080")
-	dbUrl := "postgres://suraj:Bhakare@localhost:5432/mydb"
-	db = database.NewStore(dbUrl)
-	fmt.Println("Database Connected Successfully")
-	err := db.RunMigration()
-	if err != nil {
-		log.Fatal("Unable to run migration :", err)
-	}
-
-	// Routes
-
-	http.HandleFunc("/add", AddService)
-	http.HandleFunc("/update", UpdateService)
-	http.HandleFunc("/runall", RunAll)
-	http.HandleFunc("/delete", DeleteHandler)
-
-	// CORS Middleware
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:5173"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"*"},
-	})
-
-	// Wrap Default ServeMux
-	handler := c.Handler(http.DefaultServeMux)
-	// Start Server
-
-	log.Fatal(http.ListenAndServe(":8080", handler))
 }

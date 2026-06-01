@@ -1,0 +1,180 @@
+.footer {
+
+    background: #050b18;
+
+    color: white;
+
+    padding: 80px 80px 30px;
+}
+
+
+/* TOP */
+
+.footer-top {
+
+    display: flex;
+    justify-content: space-between;
+
+    gap: 60px;
+
+    flex-wrap: wrap;
+}
+
+
+/* BRAND */
+
+.footer-brand {
+
+    max-width: 350px;
+}
+
+.footer-brand h2 {
+
+    font-size: 34px;
+
+    margin-bottom: 20px;
+
+    color: #3b82f6;
+}
+
+.footer-brand p {
+
+    color: #9ca3af;
+
+    line-height: 1.8;
+}
+
+
+/* LINKS */
+
+.footer-links,
+.footer-social {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.footer-links h3,
+.footer-social h3 {
+
+    margin-bottom: 15px;
+
+    font-size: 20px;
+}
+
+.footer-links a {
+
+    text-decoration: none;
+
+    color: #9ca3af;
+
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+
+    color: #3b82f6;
+}
+
+
+/* SOCIAL */
+
+.social-icons {
+
+    display: flex;
+
+    gap: 18px;
+}
+
+.social-icons a {
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    background: #0f172a;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+
+    font-size: 18px;
+
+    transition: 0.3s;
+
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+
+    background: #3b82f6;
+
+    transform: translateY(-4px);
+}
+
+
+/* DIVIDER */
+
+.footer-divider {
+    width: 100%;
+    height: 1px;
+    background: #1e293b;
+    margin: 50px 0 30px;
+}
+
+/* BOTTOM */
+.footer-bottom {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #9ca3af;
+}
+
+
+/* SCROLL BUTTON */
+
+.scroll-top {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: #3b82f6;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.scroll-top:hover {
+    background: #2563eb;
+    transform: translateY(-4px);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+
+    .footer {
+
+        padding: 60px 25px 25px;
+    }
+
+    .footer-top {
+
+        flex-direction: column;
+    }
+
+    .footer-bottom {
+
+        flex-direction: column;
+
+        gap: 20px;
+    }
+}

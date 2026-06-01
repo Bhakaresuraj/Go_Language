@@ -48,12 +48,13 @@ export default function Card({ data }) {
     return (
         <div className="mt-5 container">
 
-            <div className="row g-5">
+            <div className="row  g-5">
 
-                {cardData.map((item, index) => (
-
+                {cardData.map((item, index) => (<>
+                    
                     <div className="col-md-3 " key={index}>
                         <div className="dashboard-card">
+                            <div className='reddot'></div>
                             <div className="icon-box">
                                 <i className={`${item.icon}`}></i>
                                 <i></i>
@@ -64,6 +65,7 @@ export default function Card({ data }) {
                         </div>
 
                     </div>
+                </>
 
                 ))}
 

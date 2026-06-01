@@ -1,9 +1,15 @@
 import './table.css';
 import { useState } from 'react';
-import { DeleteService } from '../../utils/api'
+import { DeleteService } from '../../../utils/api'
 export default function ServiceTable({ setShowUpdate, setFormData, data }) {
 
     async function HandleDelete(Id) {
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this service?"
+        );
+        if (!confirmDelete) {
+            return;
+        }
         await DeleteService(Id);
     }
 
@@ -92,7 +98,7 @@ export default function ServiceTable({ setShowUpdate, setFormData, data }) {
                                             {service.Response_time} ms
                                         </span>
                                     ) : (
-                                        <span className="response-timeout">
+                                        <span  className="down timeout">
                                             Timeout
                                         </span>
                                     )
